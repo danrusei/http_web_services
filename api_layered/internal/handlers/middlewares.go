@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func (s *server) Logger(next http.HandlerFunc) http.HandlerFunc {
+func (s *Server) log(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		startTime := time.Now()
 		defer s.logger.Printf("request processed in %s\n", time.Now().Sub(startTime))
