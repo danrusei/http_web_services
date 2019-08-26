@@ -4,6 +4,7 @@ import (
 	"net/http"
 )
 
+// API holds dependencies
 type api struct {
 	router *http.ServeMux
 }
