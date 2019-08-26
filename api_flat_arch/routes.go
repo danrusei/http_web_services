@@ -1,14 +1,17 @@
-package routes
+package main
 
-import "net/http"
+import (
+	"net/http"
+)
 
 type api struct {
 	router *http.ServeMux
 }
 
-//NewAPI is api struct constructor
-func NewAPI() *api {
-	a := &api{}
+func newAPI() *api {
+	a := &api{
+		router: http.NewServeMux(),
+	}
 	a.routes()
 	return a
 }

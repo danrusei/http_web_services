@@ -5,8 +5,6 @@ import (
 	"log"
 	"net/http"
 	"time"
-
-	"github.com/Danr17/http_web_services/api_layered/routes"
 )
 
 var (
@@ -17,7 +15,7 @@ func main() {
 	flag.StringVar(&listenAddr, "listen-addr", ":5000", "server listen address")
 	flag.Parse()
 
-	mux := routes.NewAPI()
+	mux := newAPI()
 
 	server := http.Server{
 		Addr:         listenAddr,
