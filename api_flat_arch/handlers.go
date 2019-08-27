@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -12,30 +11,37 @@ func (a *api) handlerLists() http.HandlerFunc {
 		if err != nil {
 			a.respond(w, r, data, http.StatusNotFound)
 		}
-		w.Write([]byte("Here I'll list all goods"))
-
+		a.respond(w, r, data, http.StatusOK)
 	}
 }
 
 func (a *api) handlerAdd() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
-		w.Write([]byte("Here you'll add new goods"))
+		data, err := a.listsGoods()
+		if err != nil {
+			a.respond(w, r, data, http.StatusNotFound)
+		}
+		a.respond(w, r, data, http.StatusOK)
 	}
 }
 
 func (a *api) handlerModify() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
-		w.Write([]byte("Here you'll modify selected good"))
+		data, err := a.listsGoods()
+		if err != nil {
+			a.respond(w, r, data, http.StatusNotFound)
+		}
+		a.respond(w, r, data, http.StatusOK)
 	}
 }
 
 func (a *api) handlerDelete() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("here you'll delete selected good"))
+		data, err := a.listsGoods()
+		if err != nil {
+			a.respond(w, r, data, http.StatusNotFound)
+		}
+		a.respond(w, r, data, http.StatusOK)
 	}
 }
 
@@ -45,7 +51,7 @@ func (a *api) respond(w http.ResponseWriter, r *http.Request, data interface{}, 
 	if data != nil {
 		err := json.NewEncoder(w).Encode(data)
 		if err != nil {
-			fmt.Errorf("could not decode to json %v", err)
+			http.Error(w, "Could not encode in json", status)
 		}
 	}
 }

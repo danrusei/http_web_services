@@ -2,7 +2,7 @@ package main
 
 //Memory save tha data in memory
 type Memory struct {
-	Goods []Good
+	Items []Item
 }
 
 func (a *api) listsGoods() ([]Good, error) {
