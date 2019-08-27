@@ -9,14 +9,14 @@ func (a *api) listsGoods() ([]Good, error) {
 	return nil, nil
 }
 
-func (a *api) addGood(g Good) (string, error) {
+func (a *api) addGood(i Item) (string, error) {
 	return "", nil
 }
 
-func (a *api) modifyGood(g Good) (string, error) {
+func (a *api) modifyGood(i Item) (string, error) {
 	return "", nil
 }
 
-func (a *api) delGood(g Good) (string, error) {
+func (a *api) delGood(i Item) (string, error) {
 	return "", nil
 }
