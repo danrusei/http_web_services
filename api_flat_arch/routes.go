@@ -5,6 +5,7 @@ import (
 )
 
 type api struct {
+	db     *Memory
 	router *http.ServeMux
 }
 
@@ -17,10 +18,10 @@ func newAPI() *api {
 }
 
 func (a *api) routes() {
-	a.router.HandleFunc("/", handlerLists)
-	a.router.HandleFunc("/add", handlerAdd)
-	a.router.HandleFunc("/modify", handlerModify)
-	a.router.HandleFunc("/del", handlerDelete)
+	a.router.HandleFunc("/", a.handlerLists())
+	a.router.HandleFunc("/add", a.handlerAdd())
+	a.router.HandleFunc("/modify", a.handlerModify())
+	a.router.HandleFunc("/del", a.handlerDelete())
 }
 
 func (a *api) ServeHTTP(w http.ResponseWriter, r *http.Request) {

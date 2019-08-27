@@ -15,11 +15,17 @@ func main() {
 	flag.StringVar(&listenAddr, "listen-addr", ":5000", "server listen address")
 	flag.Parse()
 
-	mux := newAPI()
+	db := new(Memory)
+
+	srv := &api{
+		db: db,
+	}
+
+	srv = newAPI()
 
 	server := http.Server{
 		Addr:         listenAddr,
-		Handler:      mux,
+		Handler:      srv,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  15 * time.Second,
