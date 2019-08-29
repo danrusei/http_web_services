@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -35,21 +36,27 @@ func main() {
 
 	db := new(Memory)
 
-	mux := &api{
+	API := &api{
 		db: db,
 	}
 
-	mux = newAPI()
+	API = newAPI()
+
+	result, err := API.PopulateItems()
+	if err != nil {
+		log.Fatalf("could not pupulate the database %v", err)
+	}
+	fmt.Printf("Database populated %s", result)
 
 	server := http.Server{
 		Addr:         listenAddr,
-		Handler:      mux,
+		Handler:      API,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  15 * time.Second,
 	}
 
-	err := server.ListenAndServe()
+	err = server.ListenAndServe()
 	if err != nil {
 		log.Fatalf("server couldn't start %v", err)
 	}

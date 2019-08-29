@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (a *api) handlerLists() http.HandlerFunc {
+func (a *api) handleLists() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		data, err := a.listsGoods()
 		if err != nil {
@@ -15,19 +15,24 @@ func (a *api) handlerLists() http.HandlerFunc {
 	}
 }
 
-func (a *api) handlerAdd() http.HandlerFunc {
+func (a *api) handleAdd() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		item := Item{}
-		a.decode(w, r, item)
+		err := a.decode(w, r, item)
+		if err != nil {
+			a.respond(w, r, item, http.StatusBadRequest)
+		}
+
 		data, err := a.addGood(item)
 		if err != nil {
 			a.respond(w, r, data, http.StatusBadRequest)
 		}
+
 		a.respond(w, r, data, http.StatusOK)
 	}
 }
 
-func (a *api) handlerModify() http.HandlerFunc {
+func (a *api) handleModify() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		item := Item{}
 		a.decode(w, r, item)
@@ -39,7 +44,7 @@ func (a *api) handlerModify() http.HandlerFunc {
 	}
 }
 
-func (a *api) handlerDelete() http.HandlerFunc {
+func (a *api) handleDelete() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		item := Item{}
 		a.decode(w, r, item)

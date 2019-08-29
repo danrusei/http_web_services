@@ -13,7 +13,6 @@ ExpDate -- Goods validity
 ExpOpen -- Goods validity if it is opened
 */
 type Good struct {
-	ID           string
 	Name         string
 	Manufactured time.Time
 	ExpDate      time.Time
@@ -29,8 +28,9 @@ Opened -- The date when it was opeened
 IsValid -- Is the item still in validity or has expired
 */
 type Item struct {
-	ID      string
-	Type    Good
+	ID      int
+	Created time.Time
+	Good
 	IsOpen  bool
 	Opened  time.Time
 	IsValid bool
