@@ -15,14 +15,16 @@ var (
 
 // api holds dependencies
 type api struct {
-	mutex  *sync.Mutex
-	db     *Memory
+	mutex  sync.Mutex
+	db     Memory
 	router *http.ServeMux
 }
 
 func newAPI() *api {
 	a := &api{
 		router: http.NewServeMux(),
+		db:     Memory{},
+		mutex:  sync.Mutex{},
 	}
 	a.routes()
 	return a
@@ -38,13 +40,17 @@ func main() {
 
 	API := newAPI()
 
-	db := new(Memory)
-	db.PopulateItems()
-	fmt.Printf("there are %d of items in database", len(db.Items))
+	/*
+		db := Memory{}
 
-	API = &api{
-		db: db,
-	}
+		API = &api{
+			mutex: sync.Mutex{},
+			db:    db,
+		}
+	*/
+
+	API.db.PopulateItems()
+	fmt.Printf("there are %d of items in database\n", len(API.db.Items))
 
 	server := http.Server{
 		Addr:         listenAddr,

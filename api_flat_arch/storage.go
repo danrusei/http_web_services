@@ -22,8 +22,6 @@ func (a *api) listsGoods() ([]Item, error) {
 }
 
 func (a *api) addGood(items ...Item) (string, error) {
-	a.mutex.Lock()
-	defer a.mutex.Unlock()
 	for _, item := range items {
 		for _, i := range a.db.Items {
 			if item.ID == i.ID {

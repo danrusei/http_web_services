@@ -2,12 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 )
 
 func (a *api) handleLists() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		data, err := a.listsGoods()
+		log.Printf("data is %v", data)
 		if err != nil {
 			a.respond(w, r, data, http.StatusNotFound)
 		}
