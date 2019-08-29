@@ -15,7 +15,7 @@ var (
 
 // api holds dependencies
 type api struct {
-	mutex  *sync.RWMutex
+	mutex  *sync.Mutex
 	db     *Memory
 	router *http.ServeMux
 }

@@ -1,6 +1,8 @@
 package main
 
-import "time"
+import (
+	"time"
+)
 
 //Memory save tha data in memory
 type Memory struct {
