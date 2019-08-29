@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sync"
 	"time"
 )
 
@@ -14,6 +15,7 @@ var (
 
 // api holds dependencies
 type api struct {
+	mutex  *sync.RWMutex
 	db     *Memory
 	router *http.ServeMux
 }
@@ -34,19 +36,15 @@ func main() {
 	flag.StringVar(&listenAddr, "listen-addr", ":5000", "server listen address")
 	flag.Parse()
 
-	db := new(Memory)
+	API := newAPI()
 
-	API := &api{
+	db := new(Memory)
+	db.PopulateItems()
+	fmt.Printf("there are %d of items in database", len(db.Items))
+
+	API = &api{
 		db: db,
 	}
-
-	API = newAPI()
-
-	result, err := API.PopulateItems()
-	if err != nil {
-		log.Fatalf("could not pupulate the database %v", err)
-	}
-	fmt.Printf("Database populated %s", result)
 
 	server := http.Server{
 		Addr:         listenAddr,
@@ -56,7 +54,7 @@ func main() {
 		IdleTimeout:  15 * time.Second,
 	}
 
-	err = server.ListenAndServe()
+	err := server.ListenAndServe()
 	if err != nil {
 		log.Fatalf("server couldn't start %v", err)
 	}

@@ -2,7 +2,8 @@ package main
 
 import "time"
 
-func (a *api) PopulateItems() (string, error) {
+// PopulateItems insert the items in empty database
+func (db *Memory) PopulateItems() {
 	defaultItems := []Item{
 		{
 			ID: 1,
@@ -28,10 +29,12 @@ func (a *api) PopulateItems() (string, error) {
 		},
 	}
 
-	result, err := a.addGood(defaultItems...)
-	if err != nil {
-		return result, err
+	for i, item := range defaultItems {
+
+		item.ID = i + 1
+		item.Created = time.Now()
+
+		db.Items = append(db.Items, item)
 	}
 
-	return result, nil
 }
