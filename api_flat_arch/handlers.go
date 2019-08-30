@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 )
 
 func (a *api) handleLists() http.HandlerFunc {
@@ -46,9 +47,11 @@ func (a *api) handleModify() http.HandlerFunc {
 
 func (a *api) handleDelete() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		item := Item{}
-		a.decode(w, r, item)
-		data, err := a.delGood(item)
+		id, err := strconv.Atoi(r.FormValue("id"))
+		if err != nil {
+			a.respond(w, r, id, http.StatusBadRequest)
+		}
+		data, err := a.delGood(id)
 		if err != nil {
 			a.respond(w, r, data, http.StatusBadRequest)
 		}

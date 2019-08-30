@@ -37,9 +37,10 @@ func (a *api) PopulateItems() {
 			"isopen":false,
 			"opened":"20-08-2019"}]`)
 
-	if err := json.Unmarshal(defaultItems, &a.db.Items); err != nil {
+	data := make([]Item, 4)
+	if err := json.Unmarshal(defaultItems, &data); err != nil {
 		fmt.Println("Could not unmarshal data:", err)
 		return
 	}
-
+	a.addGood(data...)
 }

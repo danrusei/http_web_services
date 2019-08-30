@@ -43,6 +43,12 @@ func (a *api) modifyGood(i Item) (string, error) {
 	return "", nil
 }
 
-func (a *api) delGood(i Item) (string, error) {
+func (a *api) delGood(id int) (string, error) {
+	for _, item := range a.db.Items {
+		if id == item.ID {
+			a.db.Items = append(a.db.Items[:item])
+
+		}
+	}
 	return "", nil
 }
