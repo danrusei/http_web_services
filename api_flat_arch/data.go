@@ -21,6 +21,20 @@ func (a *api) PopulateItems() {
 			"expdate":"23-10-2019",
 			"expopen":20,
 			"isopen":false,
+			"opened":"20-08-2019"},{
+			"id":3,
+			"name":"CannedFish",
+			"manufactured":"15-11-2018",
+			"expdate":"10-10-2020",
+			"expopen":5,
+			"isopen":true,
+			"opened":"20-08-2019"},{
+			"id":4,
+			"name":"CannedBeans",
+			"manufactured":"24-02-2019",
+			"expdate":"10-08-2020",
+			"expopen":5,
+			"isopen":false,
 			"opened":"20-08-2019"}]`)
 
 	if err := json.Unmarshal(defaultItems, &a.db.Items); err != nil {
