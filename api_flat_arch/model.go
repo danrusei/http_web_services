@@ -1,8 +1,11 @@
 package main
 
 import (
+	"strings"
 	"time"
 )
+
+const layoutRO = "02-01-2006"
 
 /*
 Good struct holds the data of an item type:
@@ -13,10 +16,10 @@ ExpDate -- Goods validity
 ExpOpen -- Goods validity if it is opened
 */
 type Good struct {
-	Name         string
-	Manufactured time.Time
-	ExpDate      time.Time
-	ExpOpen      time.Duration
+	Name         string    `json:"name"`
+	Manufactured timestamp `json:"manufactured"`
+	ExpDate      timestamp `jsnon:"expdate"`
+	ExpOpen      int       `json:"expopen"`
 }
 
 /*
@@ -28,10 +31,42 @@ Opened -- The date when it was opeened
 IsValid -- Is the item still in validity or has expired
 */
 type Item struct {
-	ID      int
+	ID      int `json:"id,omitempty"`
 	Created time.Time
 	Good
-	IsOpen  bool
-	Opened  time.Time
-	IsValid bool
+	IsOpen  bool      `json:"isopen"`
+	Opened  timestamp `json:"opened"`
+	IsValid bool      `json:"isvalid"`
+}
+
+// Create custom type to be able to handle different date format
+type timestamp struct {
+	time.Time
+}
+
+//In order to satisfy the Unmarshaler interface, we define a single method on timestamp called UnmarshalJSON.
+func (ts *timestamp) UnmarshalJSON(b []byte) error {
+	// Convert to string and remove quotes
+	s := strings.Trim(string(b), "\"")
+
+	// Parse the time using the layout
+	t, err := time.Parse(layoutRO, s)
+	if err != nil {
+		return err
+	}
+	// Assign the parsed time to our variable
+	ts.Time = t
+	return nil
+}
+
+func (ts timestamp) MarshalJSON() ([]byte, error) {
+	// The +2 is to take account of the quotation marks
+	b := make([]byte, 0, len(layoutRO)+2)
+
+	// Write the JSON output
+	b = append(b, '"')
+	b = ts.AppendFormat(b, layoutRO)
+	b = append(b, '"')
+
+	return b, nil
 }

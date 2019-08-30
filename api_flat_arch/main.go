@@ -49,7 +49,7 @@ func main() {
 		}
 	*/
 
-	API.db.PopulateItems()
+	API.PopulateItems()
 	fmt.Printf("there are %d of items in database\n", len(API.db.Items))
 
 	server := http.Server{
