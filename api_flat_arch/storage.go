@@ -35,9 +35,13 @@ func (a *api) addGood(items ...Item) (string, error) {
 			}
 
 		}
+		addtime, err := time.Parse(layoutRO, time.Now().String())
+		if err != nil {
+			return "", nil
+		}
 
 		item.ID = len(a.db.Items) + 1
-		item.Created = time.Now()
+		item.Created = timestamp{addtime}
 
 		a.db.Items = append(a.db.Items, item)
 	}
@@ -45,7 +49,18 @@ func (a *api) addGood(items ...Item) (string, error) {
 	return "Items added to database", nil
 }
 
-func (a *api) modifyGood(i Item) (string, error) {
+func (a *api) openState(id int, status bool) (string, error) {
+	for _, item := range a.db.Items {
+		if item.ID == id {
+			opentime, err := time.Parse(layoutRO, time.Now().String())
+			if err != nil {
+				return "", err
+			}
+			item.IsOpen = status
+			item.Opened = timestamp{opentime}
+		}
+		return "", errNotFound
+	}
 	return "", nil
 }
 

@@ -33,11 +33,14 @@ func (a *api) handleAdd() http.HandlerFunc {
 	}
 }
 
-func (a *api) handleModify() http.HandlerFunc {
+func (a *api) handleOpen() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		item := Item{}
-		a.decode(w, r, item)
-		data, err := a.modifyGood(item)
+		id, err := strconv.Atoi(r.FormValue("id"))
+		if err != nil {
+			a.respond(w, r, id, http.StatusBadRequest)
+		}
+		b, err := strconv.ParseBool(r.FormValue("open"))
+		data, err := a.openState(id, b)
 		if err != nil {
 			a.respond(w, r, data, http.StatusBadRequest)
 		}

@@ -13,15 +13,13 @@ func (a *api) PopulateItems() {
 			"manufactured":"23-07-2019",
 			"expdate":"23-08-2019",
 			"expopen":10,
-			"isopen":false,
+			"isopen":true,
 			"opened":"30-07-2019"},{
 			"id":2,
 			"name":"Butter",
 			"manufactured":"15-07-2019",
 			"expdate":"23-10-2019",
-			"expopen":20,
-			"isopen":false,
-			"opened":"20-08-2019"},{
+			"expopen":20},{
 			"id":3,
 			"name":"CannedFish",
 			"manufactured":"15-11-2018",
@@ -33,9 +31,7 @@ func (a *api) PopulateItems() {
 			"name":"CannedBeans",
 			"manufactured":"24-02-2019",
 			"expdate":"10-08-2020",
-			"expopen":5,
-			"isopen":false,
-			"opened":"20-08-2019"}]`)
+			"expopen":5}]`)
 
 	data := make([]Item, 4)
 	if err := json.Unmarshal(defaultItems, &data); err != nil {

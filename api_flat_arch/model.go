@@ -32,10 +32,10 @@ IsValid -- Is the item still in validity or has expired
 */
 type Item struct {
 	ID      int `json:"id,omitempty"`
-	Created time.Time
+	Created timestamp
 	Good
-	IsOpen  bool      `json:"isopen"`
-	Opened  timestamp `json:"opened"`
+	IsOpen  bool      `json:"isopen,omitempty"`
+	Opened  timestamp `json:"opened,omitempty"`
 	IsValid bool      `json:"isvalid"`
 }
 

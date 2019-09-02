@@ -40,15 +40,6 @@ func main() {
 
 	API := newAPI()
 
-	/*
-		db := Memory{}
-
-		API = &api{
-			mutex: sync.Mutex{},
-			db:    db,
-		}
-	*/
-
 	API.PopulateItems()
 	fmt.Printf("there are %d of items in database\n", len(API.db.Items))
 
