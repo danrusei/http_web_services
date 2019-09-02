@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log"
 	"time"
 )
 
@@ -35,13 +36,15 @@ func (a *api) addGood(items ...Item) (string, error) {
 			}
 
 		}
-		addtime, err := time.Parse(layoutRO, time.Now().String())
+		addtime := time.Now().Format(layoutRO)
+		addtime1, err := time.Parse(layoutRO, addtime)
 		if err != nil {
-			return "", nil
+			log.Printf("Can't parse the date, %v", err)
+			return "", fmt.Errorf("can't parse the date: %v", err)
 		}
 
 		item.ID = len(a.db.Items) + 1
-		item.Created = timestamp{addtime}
+		item.Created = timestamp{addtime1}
 
 		a.db.Items = append(a.db.Items, item)
 	}
@@ -52,12 +55,14 @@ func (a *api) addGood(items ...Item) (string, error) {
 func (a *api) openState(id int, status bool) (string, error) {
 	for _, item := range a.db.Items {
 		if item.ID == id {
-			opentime, err := time.Parse(layoutRO, time.Now().String())
+			opentimeS := time.Now().Format(layoutRO)
+			opentimeT, err := time.Parse(layoutRO, opentimeS)
 			if err != nil {
-				return "", err
+				log.Printf("Can't parse the date, %v", err)
+				return "", fmt.Errorf("can't parse the date: %v", err)
 			}
 			item.IsOpen = status
-			item.Opened = timestamp{opentime}
+			item.Opened = timestamp{opentimeT}
 		}
 		return "", errNotFound
 	}
