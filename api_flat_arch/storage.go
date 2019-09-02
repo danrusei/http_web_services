@@ -22,6 +22,8 @@ func (a *api) listsGoods() ([]Item, error) {
 	var listItems []Item
 
 	for _, item := range a.db.Items {
+		valid := checkValidity(item)
+		item.IsValid = valid
 		listItems = append(listItems, item)
 	}
 
@@ -86,4 +88,21 @@ func (a *api) delGood(id int) (string, error) {
 
 func removeIndex(s []Item, index int) []Item {
 	return append(s[:index], s[index+1:]...)
+}
+
+func checkValidity(i Item) bool {
+	t := time.Now()
+	i.IsValid = true
+	if t.Sub(i.ExpDate.Time) > 0 {
+		i.IsValid = false
+	}
+
+	if i.IsOpen {
+		//if i.Opened.Time.Add(time.Duration(int64(time.Duration(i.ExpOpen * 24).Hours()))).Before(t) {
+		if t.Sub(i.Opened.Time.AddDate(0, 0, i.ExpOpen)) > 0 {
+			i.IsValid = false
+		}
+	}
+
+	return i.IsValid
 }
