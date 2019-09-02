@@ -53,7 +53,7 @@ func (a *api) handleDelete() http.HandlerFunc {
 		}
 		data, err := a.delGood(id)
 		if err != nil {
-			a.respond(w, r, data, http.StatusBadRequest)
+			a.respond(w, r, err, http.StatusBadRequest)
 		}
 		a.respond(w, r, data, http.StatusOK)
 	}
