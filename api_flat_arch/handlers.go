@@ -18,13 +18,13 @@ func (a *api) handleLists() http.HandlerFunc {
 
 func (a *api) handleAdd() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		item := Item{}
-		err := a.decode(w, r, item)
+		var items []Item
+		err := a.decode(w, r, &items)
 		if err != nil {
-			a.respond(w, r, item, http.StatusBadRequest)
+			a.respond(w, r, items, http.StatusBadRequest)
 		}
 
-		data, err := a.addGood(item)
+		data, err := a.addGood(items...)
 		if err != nil {
 			a.respond(w, r, data, http.StatusBadRequest)
 		}

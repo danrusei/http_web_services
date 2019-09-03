@@ -31,6 +31,8 @@ func (a *api) listsGoods() ([]Item, error) {
 }
 
 func (a *api) addGood(items ...Item) (string, error) {
+	a.mutex.Lock()
+	defer a.mutex.Unlock()
 	for _, item := range items {
 		for _, i := range a.db.Items {
 			if item.ID == i.ID {
@@ -51,10 +53,12 @@ func (a *api) addGood(items ...Item) (string, error) {
 		a.db.Items = append(a.db.Items, item)
 	}
 
-	return "Items added to database", nil
+	return "Items has been added to database", nil
 }
 
 func (a *api) openState(id int, status bool) (string, error) {
+	a.mutex.Lock()
+	defer a.mutex.Unlock()
 	for _, item := range a.db.Items {
 		if item.ID == id {
 			opentimeS := time.Now().Format(layoutRO)
@@ -72,6 +76,8 @@ func (a *api) openState(id int, status bool) (string, error) {
 }
 
 func (a *api) delGood(id int) (string, error) {
+	a.mutex.Lock()
+	defer a.mutex.Unlock()
 	var index int
 	for i, item := range a.db.Items {
 		if id == item.ID {
