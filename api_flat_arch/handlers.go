@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -37,12 +38,16 @@ func (a *api) handleOpen() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id, err := strconv.Atoi(r.FormValue("id"))
 		if err != nil {
-			a.respond(w, r, id, http.StatusBadRequest)
+			a.respond(w, r, err, http.StatusBadRequest)
 		}
 		b, err := strconv.ParseBool(r.FormValue("open"))
+		if err != nil {
+			a.respond(w, r, err, http.StatusBadRequest)
+		}
+		log.Printf("the id is %d and the status is %v", id, b)
 		data, err := a.openState(id, b)
 		if err != nil {
-			a.respond(w, r, data, http.StatusBadRequest)
+			a.respond(w, r, err, http.StatusBadRequest)
 		}
 		a.respond(w, r, data, http.StatusOK)
 	}

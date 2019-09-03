@@ -59,20 +59,25 @@ func (a *api) addGood(items ...Item) (string, error) {
 func (a *api) openState(id int, status bool) (string, error) {
 	a.mutex.Lock()
 	defer a.mutex.Unlock()
-	for _, item := range a.db.Items {
-		if item.ID == id {
-			opentimeS := time.Now().Format(layoutRO)
-			opentimeT, err := time.Parse(layoutRO, opentimeS)
-			if err != nil {
-				log.Printf("Can't parse the date, %v", err)
-				return "", fmt.Errorf("can't parse the date: %v", err)
-			}
-			item.IsOpen = status
-			item.Opened = timestamp{opentimeT}
+	var found int
+	for i, item := range a.db.Items {
+		if id == item.ID {
+			found = i
+			break
 		}
-		return "", errNotFound
 	}
-	return "", nil
+	if found != 0 {
+		opentimeS := time.Now().Format(layoutRO)
+		opentimeT, err := time.Parse(layoutRO, opentimeS)
+		if err != nil {
+			log.Printf("Can't parse the date, %v", err)
+			return "", fmt.Errorf("can't parse the date: %v", err)
+		}
+		a.db.Items[found].IsOpen = status
+		a.db.Items[found].Opened = timestamp{opentimeT}
+
+	}
+	return fmt.Sprintf("Item with id %d has been opened", found+1), nil
 }
 
 func (a *api) delGood(id int) (string, error) {
