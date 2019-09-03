@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"strconv"
 )
@@ -44,7 +43,6 @@ func (a *api) handleOpen() http.HandlerFunc {
 		if err != nil {
 			a.respond(w, r, err, http.StatusBadRequest)
 		}
-		log.Printf("the id is %d and the status is %v", id, b)
 		data, err := a.openState(id, b)
 		if err != nil {
 			a.respond(w, r, err, http.StatusBadRequest)
