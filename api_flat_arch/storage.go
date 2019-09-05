@@ -77,7 +77,7 @@ func (a *api) openState(id int, status bool) (string, error) {
 		a.db.Items[found].Opened = timestamp{opentimeT}
 
 	}
-	return fmt.Sprintf("Item with id %d has been opened", found+1), nil
+	return fmt.Sprintf("Item with id %d has been opened", a.db.Items[found].ID), nil
 }
 
 func (a *api) delGood(id int) (string, error) {
