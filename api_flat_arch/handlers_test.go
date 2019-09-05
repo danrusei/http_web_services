@@ -19,7 +19,7 @@ var mockDatabase = []Item{
 			ExpDate:      timestamp{time.Date(2019, 10, 04, 00, 00, 00, 00, time.UTC)},
 			ExpOpen:      20,
 		},
-		IsOpen: true,
+		IsOpen: false,
 		Opened: timestamp{time.Date(2019, 9, 03, 00, 00, 00, 00, time.UTC)},
 	},
 }
@@ -91,9 +91,42 @@ func TestHandleAdd(t *testing.T) {
 		t.Errorf("expected status OK; got %v", res.Status)
 	}
 
+	if len(srv.db.Items) != 2 {
+		t.Fatalf("the item has not be inserted in database")
+	}
+
+	if srv.db.Items[1].Name != "BottleMilk" {
+		t.Fatalf("The item name expected to be BottleMilk but we got %s ", srv.db.Items[1].Name)
+	}
+
 }
 
 func TestHandleOpen(t *testing.T) {
+	srv := api{
+		router: http.NewServeMux(),
+		db:     Memory{mockDatabase},
+	}
+
+	srv.routes()
+	req, err := http.NewRequest("GET", "/open?id=1&open=false", nil)
+	if err != nil {
+		t.Fatalf("could not create request: %v", err)
+	}
+
+	rec := httptest.NewRecorder()
+	srv.ServeHTTP(rec, req)
+
+	res := rec.Result()
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		t.Fatalf("expected status OK; got %v", res.Status)
+	}
+
+	if srv.db.Items[0].IsOpen {
+		t.Fatalf("expected item open state to be false but we got %v", srv.db.Items[0].IsOpen)
+	}
+
 }
 
 func TestHandleDelete(t *testing.T) {
