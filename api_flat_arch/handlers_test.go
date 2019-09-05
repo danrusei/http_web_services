@@ -19,7 +19,7 @@ var mockDatabase = []Item{
 			ExpDate:      timestamp{time.Date(2019, 10, 04, 00, 00, 00, 00, time.UTC)},
 			ExpOpen:      20,
 		},
-		IsOpen: false,
+		IsOpen: true,
 		Opened: timestamp{time.Date(2019, 9, 03, 00, 00, 00, 00, time.UTC)},
 	},
 }
@@ -130,4 +130,28 @@ func TestHandleOpen(t *testing.T) {
 }
 
 func TestHandleDelete(t *testing.T) {
+	srv := api{
+		router: http.NewServeMux(),
+		db:     Memory{mockDatabase},
+	}
+
+	srv.routes()
+	req, err := http.NewRequest("GET", "/del?id=1", nil)
+	if err != nil {
+		t.Fatalf("could not create request: %v", err)
+	}
+
+	rec := httptest.NewRecorder()
+	srv.ServeHTTP(rec, req)
+
+	res := rec.Result()
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		t.Fatalf("expected status OK; got %v", res.Status)
+	}
+
+	if len(srv.db.Items) != 0 {
+		t.Fatalf("there should be 0 Items in database but there are %d", len(srv.db.Items))
+	}
 }

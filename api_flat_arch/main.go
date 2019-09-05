@@ -32,7 +32,6 @@ func run() error {
 
 	API.PopulateItems()
 	fmt.Printf("there are %d of items in database\n", len(API.db.Items))
-	fmt.Printf("the format of a date is %v", API.db.Items[1].Created)
 
 	server := http.Server{
 		Addr:         listenAddr,

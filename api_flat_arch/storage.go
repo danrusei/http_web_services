@@ -66,7 +66,7 @@ func (a *api) openState(id int, status bool) (string, error) {
 			break
 		}
 	}
-	if found != 0 {
+	if found >= 0 {
 		opentimeS := time.Now().Format(layoutRO)
 		opentimeT, err := time.Parse(layoutRO, opentimeS)
 		if err != nil {
@@ -90,7 +90,7 @@ func (a *api) delGood(id int) (string, error) {
 			break
 		}
 	}
-	if index != 0 {
+	if index >= 0 {
 		a.db.Items = removeIndex(a.db.Items, index)
 		return fmt.Sprintf("Item id %d has been deleted", id), nil
 	}
