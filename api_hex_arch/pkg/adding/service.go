@@ -1,6 +1,9 @@
 package adding
 
-import "errors"
+import (
+	"errors"
+	"log"
+)
 
 // ErrDuplicate is used when a beer already exists.
 var ErrDuplicate = errors.New("item already exists")
@@ -8,6 +11,7 @@ var ErrDuplicate = errors.New("item already exists")
 // Service provides beer adding operations.
 type Service interface {
 	AddItem(...Item)
+	AddSampleItem([]Item)
 }
 
 // Repository provides access to item repository.
@@ -31,6 +35,20 @@ func (s *service) AddItem(items ...Item) {
 	// any validation can be done here
 
 	for _, item := range items {
-		_ = s.iR.AddItem(item) // error handling omitted for simplicity
+		if err := s.iR.AddItem(item); err != nil {
+			log.Printf("could not add the item: %v", err)
+		}
+	}
+}
+
+// AddItem adds the given item(s) to the database
+func (s *service) AddSampleItem(items []Item) {
+
+	// any validation can be done here
+
+	for _, item := range items {
+		if err := s.iR.AddItem(item); err != nil {
+			log.Printf("could not add the sample data: %v", err)
+		}
 	}
 }

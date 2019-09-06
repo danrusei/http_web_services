@@ -42,7 +42,7 @@ func run() error {
 	adder = adding.NewService(store)
 
 	//seed the database
-	adder.AddItem(seed.PopulateItems()...)
+	adder.AddSampleItem(seed.PopulateItems())
 
 	// set up the HTTP server
 	h := rest.NewHandlers(lister, adder)

@@ -27,7 +27,7 @@ func NewHandlers(l listing.Service, a adding.Service) *Handlers {
 //SetupRoutes define the mux routes
 func (h *Handlers) SetupRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/", h.logger(h.handleLists(h.lister)))
-	mux.HandleFunc("/", h.logger(h.handleAdd(h.adder)))
+	mux.HandleFunc("/add", h.logger(h.handleAdd(h.adder)))
 }
 
 //GetServer returns an http.Server

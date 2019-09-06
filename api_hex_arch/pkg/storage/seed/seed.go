@@ -12,35 +12,35 @@ func PopulateItems() []adding.Item {
 	defaultItems := []byte(`[{
 			"id":1,
 			"name":"Milk-(False)",
-			"manufactured":"23-07-2019",
-			"expdate":"23-08-2019",
+			"manufactured":"2019-07-23T00:00:00Z",
+			"expdate":"2019-08-23T00:00:00Z",
 			"expopen":10,
 			"isopen":true,
-			"opened":"30-07-2019"},{
+			"opened":"2019-07-30T00:00:00Z"},{
 			"id":2,
 			"name":"Milk2-(False)",
-			"manufactured":"23-07-2019",
-			"expdate":"23-12-2019",
+			"manufactured":"2019-07-23T00:00:00Z",
+			"expdate":"2019-12-23T00:00:00Z",
 			"expopen":10,
 			"isopen":true,
-			"opened":"30-07-2019"},{
+			"opened":"2019-07-30T00:00:00Z"},{
 			"id":3,
 			"name":"CannedFish-(True)",
-			"manufactured":"15-11-2018",
-			"expdate":"10-10-2020",
+			"manufactured":"2019-11-15T00:00:00Z",
+			"expdate":"2020-10-10T00:00:00Z",
 			"expopen":30,
 			"isopen":true,
-			"opened":"20-08-2019"},{
+			"opened":"2019-08-20T00:00:00Z"},{
 			"id":4,
 			"name":"Butter-(False)",
-			"manufactured":"15-07-2019",
-			"expdate":"23-08-2019",
+			"manufactured":"2019-07-15T00:00:00Z",
+			"expdate":"2019-08-23T00:00:00Z",
 			"expopen":20,
 			"isopen":false},{
 			"id":5,
 			"name":"CannedBeans-(True)",
-			"manufactured":"24-02-2019",
-			"expdate":"10-08-2020",
+			"manufactured":"2019-02-24T00:00:00Z",
+			"expdate":"2020-08-10T00:00:00Z",
 			"expopen":5,
 			"isopen":false}]`)
 
