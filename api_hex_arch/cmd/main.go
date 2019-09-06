@@ -10,8 +10,10 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/Danr17/http_web_services/api_hex_arch/pkg/adding"
 	"github.com/Danr17/http_web_services/api_hex_arch/pkg/listing"
 	"github.com/Danr17/http_web_services/api_hex_arch/pkg/storage/memory"
+	"github.com/Danr17/http_web_services/api_hex_arch/pkg/storage/seed"
 	"github.com/Danr17/http_web_services/api_hex_arch/pkg/transport/rest"
 )
 
@@ -31,15 +33,19 @@ func run() error {
 	flag.Parse()
 
 	var lister listing.Service
-	//var adder adding.Service
+	var adder adding.Service
 	//var opener opening.Service
 	//var remover removing.Service
 
 	store := new(memory.Storage)
 	lister = listing.NewService(store)
+	adder = adding.NewService(store)
+
+	//seed the database
+	adder.AddItem(seed.PopulateItems()...)
 
 	// set up the HTTP server
-	h := rest.NewHandlers(lister)
+	h := rest.NewHandlers(lister, adder)
 	server := h.GetServer(listenAddr)
 
 	//channel to listen for errors coming from the listener.
