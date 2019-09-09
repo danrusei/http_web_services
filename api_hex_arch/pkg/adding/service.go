@@ -16,7 +16,6 @@ type Service interface {
 
 // Repository provides access to item repository.
 type Repository interface {
-	// AddItem saves a given beer to the repository.
 	AddItem(Item) error
 }
 

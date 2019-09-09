@@ -3,12 +3,12 @@ package listing
 // Repository provides access to the items storage.
 type Repository interface {
 	// GetGoods returns all the Items.
-	ListGoods() ([]Item, error)
+	ListItems() ([]Item, error)
 }
 
 // Service provides beer and review listing operations.
 type Service interface {
-	ListGoods() ([]Item, error)
+	ListItems() ([]Item, error)
 }
 
 type service struct {
@@ -21,6 +21,6 @@ func NewService(r Repository) Service {
 }
 
 // GetBeers returns all beers
-func (s *service) ListGoods() ([]Item, error) {
-	return s.r.ListGoods()
+func (s *service) ListItems() ([]Item, error) {
+	return s.r.ListItems()
 }

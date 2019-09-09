@@ -6,6 +6,7 @@ import (
 
 	"github.com/Danr17/http_web_services/api_hex_arch/pkg/adding"
 	"github.com/Danr17/http_web_services/api_hex_arch/pkg/listing"
+	"github.com/Danr17/http_web_services/api_hex_arch/pkg/opening"
 )
 
 //Storage storage keeps data in memory
@@ -13,11 +14,13 @@ type Storage struct {
 	items []Item
 }
 
-// ListGoods return all items
-func (m *Storage) ListGoods() ([]listing.Item, error) {
+// ListItems return all items
+func (m *Storage) ListItems() ([]listing.Item, error) {
 	var items []listing.Item
 
 	for i := range m.items {
+
+		valid := checkValidity(m.items[i])
 
 		item := listing.Item{
 			ID:      m.items[i].ID,
@@ -28,7 +31,7 @@ func (m *Storage) ListGoods() ([]listing.Item, error) {
 				ExpOpen:      m.items[i].ExpOpen},
 			IsOpen:  m.items[i].IsOpen,
 			Opened:  m.items[i].Opened,
-			IsValid: m.items[i].IsValid,
+			IsValid: valid,
 		}
 
 		items = append(items, item)
@@ -39,8 +42,8 @@ func (m *Storage) ListGoods() ([]listing.Item, error) {
 
 // AddItem add the item to repository
 func (m *Storage) AddItem(it adding.Item) error {
-	for _, i := range m.items {
-		if it.ID == i.ID {
+	for _, item := range m.items {
+		if it.ID == item.ID {
 			return fmt.Errorf("item %d already exists in database", it.ID)
 		}
 	}
@@ -65,4 +68,42 @@ func (m *Storage) AddItem(it adding.Item) error {
 	m.items = append(m.items, newItem)
 
 	return nil
+}
+
+// OpenItem return all items
+func (m *Storage) OpenItem(request opening.OpenRequest) error {
+	var foundIndex int
+	var found bool
+	for index, item := range m.items {
+		if request.ID == item.ID {
+			found = true
+			foundIndex = index
+			break
+		}
+	}
+
+	m.items[foundIndex].IsOpen = request.IsOpen
+	m.items[foundIndex].Opened = time.Now()
+
+	if !found {
+		return fmt.Errorf("the item with the id %d couldn't be found", request.ID)
+	}
+
+	return nil
+}
+
+func checkValidity(i Item) bool {
+	t := time.Now()
+	i.IsValid = true
+	if t.Sub(i.ExpDate) > 0 {
+		i.IsValid = false
+	}
+
+	if i.IsOpen {
+		if t.Sub(i.Opened.AddDate(0, 0, i.ExpOpen)) > 0 {
+			i.IsValid = false
+		}
+	}
+
+	return i.IsValid
 }
