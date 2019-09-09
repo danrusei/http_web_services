@@ -59,42 +59,51 @@ func (a *api) addGood(items ...Item) (string, error) {
 func (a *api) openState(id int, status bool) (string, error) {
 	a.mutex.Lock()
 	defer a.mutex.Unlock()
-	var found int
+	var foundIndex int
+	var found bool
 	for i, item := range a.db.Items {
 		if id == item.ID {
-			found = i
+			found = true
+			foundIndex = i
 			break
 		}
 	}
-	if found >= 0 {
-		opentimeS := time.Now().Format(layoutRO)
-		opentimeT, err := time.Parse(layoutRO, opentimeS)
-		if err != nil {
-			log.Printf("Can't parse the date, %v", err)
-			return "", fmt.Errorf("can't parse the date: %v", err)
-		}
-		a.db.Items[found].IsOpen = status
-		a.db.Items[found].Opened = timestamp{opentimeT}
-
+	if !found {
+		return "", errNotFound
 	}
-	return fmt.Sprintf("Item with id %d has been opened", a.db.Items[found].ID), nil
+
+	opentimeS := time.Now().Format(layoutRO)
+	opentimeT, err := time.Parse(layoutRO, opentimeS)
+	if err != nil {
+		log.Printf("Can't parse the date, %v", err)
+		return "", fmt.Errorf("can't parse the date: %v", err)
+	}
+	a.db.Items[foundIndex].IsOpen = status
+	a.db.Items[foundIndex].Opened = timestamp{opentimeT}
+
+	return fmt.Sprintf("Item with id %d has been opened", a.db.Items[foundIndex].ID), nil
 }
 
 func (a *api) delGood(id int) (string, error) {
 	a.mutex.Lock()
 	defer a.mutex.Unlock()
-	var index int
+	var foundIndex int
+	var found bool
 	for i, item := range a.db.Items {
 		if id == item.ID {
-			index = i
+			found = true
+			foundIndex = i
 			break
 		}
 	}
-	if index >= 0 {
-		a.db.Items = removeIndex(a.db.Items, index)
-		return fmt.Sprintf("Item id %d has been deleted", id), nil
+
+	if !found {
+		return "", errNotFound
 	}
-	return "", errNotFound
+
+	a.db.Items = removeIndex(a.db.Items, foundIndex)
+	return fmt.Sprintf("Item id %d has been deleted", id), nil
+
 }
 
 func removeIndex(s []Item, index int) []Item {
