@@ -70,7 +70,7 @@ func (h *Handlers) handleList(s listing.Service) http.HandlerFunc {
 func (h *Handlers) handleAdd(s adding.Service) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		var newItem adding.Item
+		var newItem []adding.Item
 
 		err := json.NewDecoder(r.Body).Decode(&newItem)
 		if err != nil {
@@ -78,7 +78,7 @@ func (h *Handlers) handleAdd(s adding.Service) http.HandlerFunc {
 			return
 		}
 
-		s.AddItem(newItem)
+		s.AddItem(newItem...)
 
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode("New item has been added.")

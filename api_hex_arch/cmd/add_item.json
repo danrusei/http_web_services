@@ -1,16 +1,16 @@
 [{
     "name":"Added-(False)",
-    "manufactured":"20-03-2019",
-    "expdate":"02-09-2019",
+    "manufactured":"2019-03-20T00:00:00Z",
+    "expdate":"2019-09-02T00:00:00Z",
 	"expopen":20,
 	"isopen":false 
 },{
     "name":"Added-(True)",
-    "manufactured":"12-07-2019",
-    "expdate":"01-11-2019",
+    "manufactured":"2019-07-12T00:00:00Z",
+    "expdate":"2019-11-01T00:00:00Z",
 	"expopen":12,
     "isopen":true,
-    "opened":"01-09-2019" 
+    "opened":"2019-09-01T00:00:00Z" 
 }]
 
 			
