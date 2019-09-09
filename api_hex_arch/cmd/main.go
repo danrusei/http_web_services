@@ -18,7 +18,8 @@ import (
 )
 
 var (
-	listenAddr string
+	listenAddr  string
+	storageType string
 )
 
 func main() {
@@ -32,12 +33,13 @@ func run() error {
 	flag.StringVar(&listenAddr, "listen-addr", ":5000", "server listen address")
 	flag.Parse()
 
+	store := new(memory.Storage)
+
 	var lister listing.Service
 	var adder adding.Service
 	//var opener opening.Service
 	//var remover removing.Service
 
-	store := new(memory.Storage)
 	lister = listing.NewService(store)
 	adder = adding.NewService(store)
 

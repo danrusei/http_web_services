@@ -43,26 +43,26 @@ func (m *Storage) AddItem(it adding.Item) error {
 		if it.ID == i.ID {
 			return fmt.Errorf("item %d already exists in database", it.ID)
 		}
-
-		addtime := time.Now()
-		it.ID = len(m.items) + 1
-		it.Created = addtime
-
-		newItem := Item{
-			ID:      it.ID,
-			Created: it.Created,
-			Good: Good{
-				Name:         it.Name,
-				Manufactured: it.Manufactured,
-				ExpDate:      it.ExpDate,
-				ExpOpen:      it.ExpOpen},
-			IsOpen:  it.IsOpen,
-			Opened:  it.Opened,
-			IsValid: it.IsValid,
-		}
-
-		m.items = append(m.items, newItem)
 	}
+
+	addtime := time.Now()
+	it.ID = len(m.items) + 1
+	it.Created = addtime
+
+	newItem := Item{
+		ID:      it.ID,
+		Created: it.Created,
+		Good: Good{
+			Name:         it.Name,
+			Manufactured: it.Manufactured,
+			ExpDate:      it.ExpDate,
+			ExpOpen:      it.ExpOpen},
+		IsOpen:  it.IsOpen,
+		Opened:  it.Opened,
+		IsValid: it.IsValid,
+	}
+
+	m.items = append(m.items, newItem)
 
 	return nil
 }

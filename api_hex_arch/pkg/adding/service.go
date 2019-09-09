@@ -21,7 +21,7 @@ type Repository interface {
 }
 
 type service struct {
-	iR Repository
+	r Repository
 }
 
 // NewService creates an adding service with the necessary dependencies
@@ -35,7 +35,7 @@ func (s *service) AddItem(items ...Item) {
 	// any validation can be done here
 
 	for _, item := range items {
-		if err := s.iR.AddItem(item); err != nil {
+		if err := s.r.AddItem(item); err != nil {
 			log.Printf("could not add the item: %v", err)
 		}
 	}
@@ -47,7 +47,7 @@ func (s *service) AddSampleItem(items []Item) {
 	// any validation can be done here
 
 	for _, item := range items {
-		if err := s.iR.AddItem(item); err != nil {
+		if err := s.r.AddItem(item); err != nil {
 			log.Printf("could not add the sample data: %v", err)
 		}
 	}
