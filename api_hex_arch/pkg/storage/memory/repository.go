@@ -48,8 +48,14 @@ func (m *Storage) AddItem(it adding.Item) error {
 		}
 	}
 
+	if len(m.items) == 0 {
+		it.ID = len(m.items) + 1
+	} else {
+		lastItem := m.items[len(m.items)-1]
+		it.ID = lastItem.ID + 1
+	}
+
 	addtime := time.Now()
-	it.ID = len(m.items) + 1
 	it.Created = addtime
 
 	newItem := Item{

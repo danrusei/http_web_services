@@ -47,7 +47,13 @@ func (a *api) addGood(items ...Item) (string, error) {
 			return "", fmt.Errorf("can't parse the date: %v", err)
 		}
 
-		item.ID = len(a.db.Items) + 1
+		if len(a.db.Items) == 0 {
+			item.ID = len(a.db.Items) + 1
+		} else {
+			lastItem := a.db.Items[len(a.db.Items)-1]
+			item.ID = lastItem.ID + 1
+		}
+
 		item.Created = timestamp{addtime1}
 
 		a.db.Items = append(a.db.Items, item)
