@@ -13,6 +13,7 @@ import (
 	"github.com/Danr17/http_web_services/api_hex_arch/pkg/adding"
 	"github.com/Danr17/http_web_services/api_hex_arch/pkg/listing"
 	"github.com/Danr17/http_web_services/api_hex_arch/pkg/opening"
+	"github.com/Danr17/http_web_services/api_hex_arch/pkg/removing"
 	"github.com/Danr17/http_web_services/api_hex_arch/pkg/storage/memory"
 	"github.com/Danr17/http_web_services/api_hex_arch/pkg/storage/seed"
 	"github.com/Danr17/http_web_services/api_hex_arch/pkg/transport/rest"
@@ -39,17 +40,18 @@ func run() error {
 	var lister listing.Service
 	var adder adding.Service
 	var opener opening.Service
-	//var remover removing.Service
+	var remover removing.Service
 
 	lister = listing.NewService(store)
 	adder = adding.NewService(store)
 	opener = opening.NewService(store)
+	remover = removing.NewService(store)
 
 	//seed the database
 	adder.AddSampleItem(seed.PopulateItems())
 
 	// set up the HTTP server
-	h := rest.NewHandlers(lister, adder, opener)
+	h := rest.NewHandlers(lister, adder, opener, remover)
 	server := h.GetServer(listenAddr)
 
 	//channel to listen for errors coming from the listener.

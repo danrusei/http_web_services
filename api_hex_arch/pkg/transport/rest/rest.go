@@ -10,21 +10,24 @@ import (
 	"github.com/Danr17/http_web_services/api_hex_arch/pkg/adding"
 	"github.com/Danr17/http_web_services/api_hex_arch/pkg/listing"
 	"github.com/Danr17/http_web_services/api_hex_arch/pkg/opening"
+	"github.com/Danr17/http_web_services/api_hex_arch/pkg/removing"
 )
 
 //Handlers holds the dependencies
 type Handlers struct {
-	lister listing.Service
-	adder  adding.Service
-	opener opening.Service
+	lister  listing.Service
+	adder   adding.Service
+	opener  opening.Service
+	remover removing.Service
 }
 
 //NewHandlers is the constructor for Handlers struct
-func NewHandlers(l listing.Service, a adding.Service, o opening.Service) *Handlers {
+func NewHandlers(l listing.Service, a adding.Service, o opening.Service, r removing.Service) *Handlers {
 	return &Handlers{
-		lister: l,
-		adder:  a,
-		opener: o,
+		lister:  l,
+		adder:   a,
+		opener:  o,
+		remover: r,
 	}
 }
 
@@ -33,6 +36,7 @@ func (h *Handlers) SetupRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/", h.logger(h.handleList(h.lister)))
 	mux.HandleFunc("/add", h.logger(h.handleAdd(h.adder)))
 	mux.HandleFunc("/state", h.logger(h.handleOpen(h.opener)))
+	mux.HandleFunc("/remove", h.logger(h.handleRemove(h.remover)))
 }
 
 //GetServer returns an http.Server
@@ -98,6 +102,20 @@ func (h *Handlers) handleOpen(s opening.Service) http.HandlerFunc {
 		}
 
 		err = s.OpenItem(data)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	}
+}
+
+func (h *Handlers) handleRemove(s removing.Service) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id, err := strconv.Atoi(r.FormValue("id"))
+		if err != nil {
+			http.Error(w, "the id is not a number value", http.StatusBadRequest)
+		}
+
+		err = s.RemoveItem(id)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}

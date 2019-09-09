@@ -82,12 +82,33 @@ func (m *Storage) OpenItem(request opening.OpenRequest) error {
 		}
 	}
 
-	m.items[foundIndex].IsOpen = request.IsOpen
-	m.items[foundIndex].Opened = time.Now()
-
 	if !found {
 		return fmt.Errorf("the item with the id %d couldn't be found", request.ID)
 	}
+
+	m.items[foundIndex].IsOpen = request.IsOpen
+	m.items[foundIndex].Opened = time.Now()
+
+	return nil
+}
+
+// RemoveItem return all items
+func (m *Storage) RemoveItem(id int) error {
+	var foundIndex int
+	var found bool
+	for index, item := range m.items {
+		if id == item.ID {
+			found = true
+			foundIndex = index
+			break
+		}
+	}
+
+	if !found {
+		return fmt.Errorf("the item with the id %d couldn't be found", id)
+	}
+
+	m.items = removeIndex(m.items, foundIndex)
 
 	return nil
 }
@@ -106,4 +127,8 @@ func checkValidity(i Item) bool {
 	}
 
 	return i.IsValid
+}
+
+func removeIndex(s []Item, index int) []Item {
+	return append(s[:index], s[index+1:]...)
 }
