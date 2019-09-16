@@ -29,6 +29,7 @@ func run() error {
 	flag.Parse()
 
 	API := newAPI()
+	API.db = Memory{}
 
 	API.PopulateItems()
 	fmt.Printf("there are %d of items in database\n", len(API.db.Items))
@@ -91,7 +92,6 @@ type api struct {
 func newAPI() *api {
 	a := &api{
 		router: http.NewServeMux(),
-		db:     Memory{},
 		mutex:  sync.Mutex{},
 	}
 	a.routes()
