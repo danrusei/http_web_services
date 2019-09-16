@@ -26,12 +26,9 @@ var mockDatabase = []Item{
 
 func TestHandleLists(t *testing.T) {
 
-	srv := api{
-		router: http.NewServeMux(),
-		db:     Memory{mockDatabase},
-	}
+	srv := newAPI()
+	srv.db = Memory{mockDatabase}
 
-	srv.routes()
 	req, err := http.NewRequest("GET", "/", nil)
 	if err != nil {
 		t.Fatalf("could not create request: %v", err)
@@ -69,12 +66,9 @@ func TestHandleAdd(t *testing.T) {
 		"isopen":false
 		}]`)
 
-	srv := api{
-		router: http.NewServeMux(),
-		db:     Memory{mockDatabase},
-	}
+	srv := newAPI()
+	srv.db = Memory{mockDatabase}
 
-	srv.routes()
 	req, err := http.NewRequest("POST", "/add", bytes.NewBuffer(newItem))
 	req.Header.Set("Content-Type", "application/json")
 	if err != nil {
@@ -102,12 +96,10 @@ func TestHandleAdd(t *testing.T) {
 }
 
 func TestHandleOpen(t *testing.T) {
-	srv := api{
-		router: http.NewServeMux(),
-		db:     Memory{mockDatabase},
-	}
 
-	srv.routes()
+	srv := newAPI()
+	srv.db = Memory{mockDatabase}
+
 	req, err := http.NewRequest("GET", "/open?id=1&open=false", nil)
 	if err != nil {
 		t.Fatalf("could not create request: %v", err)
@@ -130,12 +122,10 @@ func TestHandleOpen(t *testing.T) {
 }
 
 func TestHandleDelete(t *testing.T) {
-	srv := api{
-		router: http.NewServeMux(),
-		db:     Memory{mockDatabase},
-	}
 
-	srv.routes()
+	srv := newAPI()
+	srv.db = Memory{mockDatabase}
+
 	req, err := http.NewRequest("GET", "/del?id=1", nil)
 	if err != nil {
 		t.Fatalf("could not create request: %v", err)
