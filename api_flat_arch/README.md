@@ -1,9 +1,6 @@
-# Inventory App using layered architecture
+# Inventory App using flat architecture
 
-Inspired by Matt Ryer article:  
-https://medium.com/statuscode/how-i-write-go-http-services-after-seven-years-37c208122831  
-and Florin Patan demo:  
-https://www.youtube.com/watch?v=wxkEQxvxs3w  
+https://dev-state.com/posts/http_services/
 
 Endpoint List Items:   
 curl http://localhost:5000 | json_pp  
