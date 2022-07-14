@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Danr17/items-rest-api/pkg/model"
+	"github.com/Danr17/http_web_services/api_layered_arch/pkg/model"
 )
 
 var (
