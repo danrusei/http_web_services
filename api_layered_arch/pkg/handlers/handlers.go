@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Danr17/items-rest-api/pkg/model"
-	"github.com/Danr17/items-rest-api/pkg/storage"
+	"github.com/Danr17/http_web_services/api_layered_arch/pkg/model"
+	"github.com/Danr17/http_web_services/api_layered_arch/pkg/storage"
 )
 
 //Handlers host the dependencies

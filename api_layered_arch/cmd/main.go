@@ -12,9 +12,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/Danr17/items-rest-api/pkg/handlers"
-	"github.com/Danr17/items-rest-api/pkg/storage"
-	"github.com/Danr17/items-rest-api/pkg/storage/dbmemory"
+	"github.com/Danr17/http_web_services/api_layered_arch/pkg/handlers"
+	"github.com/Danr17/http_web_services/api_layered_arch/pkg/storage"
+	"github.com/Danr17/http_web_services/api_layered_arch/pkg/storage/dbmemory"
 )
 
 var (

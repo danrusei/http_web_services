@@ -1,6 +1,6 @@
 package storage
 
-import "github.com/Danr17/items-rest-api/pkg/model"
+import "github.com/Danr17/http_web_services/api_layered_arch/pkg/model"
 
 //Storage the behavior for storing and retrieving items
 type Storage interface {
